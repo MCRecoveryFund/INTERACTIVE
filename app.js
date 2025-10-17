@@ -26,7 +26,26 @@ try {
     tg.ready();
     tg.expand();
     tg.enableClosingConfirmation();
+    // Учитываем текущую схему Telegram при старте
+    if (tg.colorScheme) {
+      document.documentElement.setAttribute(
+        "data-theme",
+        tg.colorScheme === "dark" ? "dark" : "light"
+      );
+    }
     if (tg.themeParams) applyTelegramTheme(tg.themeParams);
+
+    // Реагируем на смену темы в клиенте Telegram
+    tg.onEvent("themeChanged", () => {
+      const scheme = tg.colorScheme === "dark" ? "dark" : "light";
+      const r = document.documentElement;
+      r.setAttribute("data-theme", scheme);
+      // снимаем возможные инлайновые переопределения,
+      // чтобы сработали CSS-переменные темы
+      r.style.removeProperty("--color-text");
+      r.style.removeProperty("--color-bg");
+      if (tg.themeParams) applyTelegramTheme(tg.themeParams);
+    });
     tg.MainButton.setText("Продолжить");
     tg.MainButton.hide();
   }
@@ -36,11 +55,14 @@ try {
 
 function applyTelegramTheme(params) {
   const root = document.documentElement;
-  if (params.bg_color) root.style.setProperty("--color-bg", params.bg_color);
-  if (params.text_color)
-    root.style.setProperty("--color-text", params.text_color);
-  if (params.button_color)
+  // НЕ перетираем базовые токены темы (--color-bg/--color-text)!
+  // Акцент/кнопки можно обновить из Telegram:
+  if (params.button_color) {
     root.style.setProperty("--color-primary", params.button_color);
+  }
+  // При желании экспонируем «сырая» палитра Telegram в отдельные переменные:
+  if (params.bg_color) root.style.setProperty("--tg-bg", params.bg_color);
+  if (params.text_color) root.style.setProperty("--tg-text", params.text_color);
 }
 
 function hapticFeedback(type = "light") {
@@ -737,6 +759,9 @@ function toggleTheme() {
 
   root.setAttribute("data-theme", next);
   localStorage.setItem("theme", next);
+  // Важно: убрать инлайновые переопределения, если они были
+  root.style.removeProperty("--color-text");
+  root.style.removeProperty("--color-bg");
 
   // Update icons
   const sunIcon = document.querySelector(".theme-icon-sun");
