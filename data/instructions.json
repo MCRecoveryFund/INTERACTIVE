@@ -75,6 +75,13 @@
               "url": "https://t.me/c/2781535465/10/1227"
             }
           ]
+        },
+        {
+          "id": "usdt-eth",
+          "title": "Обмен USDT на ETH",
+          "description": "Конвертация стейблкоина в Ethereum",
+          "url": "<ADD_LINK>",
+          "type": "guide"
         }
       ]
     },
@@ -102,20 +109,21 @@
           "id": "deposit-hyperliquid-chrome",
           "title": "Через Chrome (аккаунт Hyperliquid)",
           "description": "Пополнение через браузер",
-          "url": "https://t.me/c/2781535465/10/1228",
+          "url": "<ADD_LINK>",
           "type": "guide"
         },
         {
           "id": "deposit-hyperliquid-safepal",
           "title": "Через SafePal (аккаунт Hyperliquid)",
           "description": "Пополнение через мобильный кошелёк",
-          "url": "https://t.me/c/2781535465/10/1229",
+          "url": "<ADD_LINK>",
           "type": "guide"
         },
         {
           "id": "deposit-vault-safepal",
           "title": "Пополнение Vault через SafePal",
           "description": "Ввод средств в инвестиционный фонд",
+          "url": "<ADD_LINK>",
           "type": "guide",
           "videos": [
             {
