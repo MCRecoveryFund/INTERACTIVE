@@ -1,0 +1,18 @@
+{
+  "title": "Поддержка",
+  "description": "Свяжитесь с командой поддержки",
+  "botUrl": "<ADD_SUPPORT_BOT_LINK>",
+  "channels": [
+    {
+      "type": "bot",
+      "title": "Telegram Бот",
+      "description": "Быстрые ответы на вопросы",
+      "url": "<ADD_SUPPORT_BOT_LINK>"
+    }
+  ],
+  "workingHours": {
+    "weekdays": "Понедельник - Пятница: 10:00 - 19:00 МСК",
+    "weekend": "Суббота - Воскресенье: Выходной",
+    "responseTime": "Среднее время ответа: до 2 часов"
+  }
+}

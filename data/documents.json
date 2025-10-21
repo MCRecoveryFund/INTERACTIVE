@@ -1,0 +1,26 @@
+[
+  {
+    "id": "concept",
+    "title": "Концепция VAULT",
+    "description": "Основная идея и структура инвестиционного фонда",
+    "url": "https://drive.google.com/file/d/1dhUhUYH7O7xv6PnwOXq75FBtE4Ko6_4y/view?usp=drive_link",
+    "icon": "📄",
+    "type": "pdf"
+  },
+  {
+    "id": "legal",
+    "title": "Правовая структура MC Recovery Fund",
+    "description": "Юридические аспекты и регулирование",
+    "url": "https://drive.google.com/file/d/1RSmbyjIAR_H-amzy_zvV0t8yIqjyaXWM/view?usp=drive_link",
+    "icon": "⚖️",
+    "type": "pdf"
+  },
+  {
+    "id": "agreement",
+    "title": "Соглашение",
+    "description": "Условия участия и правила",
+    "url": "https://drive.google.com/file/d/16Mhn2X62DnfYMX8GYCzin0WVwECsnAV3/view?usp=drive_link",
+    "icon": "📋",
+    "type": "pdf"
+  }
+]

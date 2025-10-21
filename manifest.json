@@ -1,0 +1,29 @@
+{
+  "name": "MC Recovery Fund",
+  "short_name": "MC Recovery",
+  "description": "Интерактивная образовательная платформа для инвесторов MC Recovery Fund",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#1326FD",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo-mc-recovery.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "education"],
+  "lang": "ru",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false
+}

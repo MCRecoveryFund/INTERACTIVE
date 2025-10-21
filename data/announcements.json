@@ -1,0 +1,14 @@
+[
+  {
+    "id": "ama-oct-21",
+    "date": "2025-10-21",
+    "time": "12:00",
+    "timezone": "МСК",
+    "type": "ama",
+    "title": "АМА-сессия: MC Recovery Fund + Prop Trading Hub",
+    "description": "Ответы на ваши вопросы — без воды, по делу. Присылайте вопросы заранее через форму.",
+    "icon": "💬",
+    "formUrl": "https://forms.gle/CLHVscbcjq51yGQx5",
+    "status": "upcoming"
+  }
+]
