@@ -1,13 +1,13 @@
 {
   "title": "Поддержка",
   "description": "Свяжитесь с командой поддержки",
-  "botUrl": "<ADD_SUPPORT_BOT_LINK>",
+  "botUrl": "https://t.me/MCRecoveryFund_bot",
   "channels": [
     {
       "type": "bot",
       "title": "Telegram Бот",
       "description": "Быстрые ответы на вопросы",
-      "url": "<ADD_SUPPORT_BOT_LINK>"
+      "url": "https://t.me/MCRecoveryFund_bot"
     }
   ],
   "workingHours": {
