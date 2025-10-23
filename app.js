@@ -2116,9 +2116,6 @@ document.addEventListener("click", (e) => {
       case "refreshVault":
         refreshVault();
         break;
-      case "filterDashboard":
-        filterDashboard(target);
-        break;
       case "resetDashboardFilters":
         resetDashboardFilters();
         break;
@@ -2128,7 +2125,7 @@ document.addEventListener("click", (e) => {
 // Global Change Event Handler for filters
 document.addEventListener("change", (e) => {
   const target = e.target;
-  if (target.dataset.action === "filterDashboard") {
+  if (target.dataset.filter) {
     filterDashboard(target);
   }
 });
@@ -2513,35 +2510,35 @@ function renderDashboardFilters() {
     <div class="dashboard-filters">
       <div class="filter-group">
         <label class="filter-label" for="dashboard-year-filter">Год</label>
-        <select class="filter-select" id="dashboard-year-filter" data-action="filterDashboard" data-filter="year">
+        <select class="filter-select" id="dashboard-year-filter" data-filter="year">
           <option value="">Все годы</option>
         </select>
       </div>
       
       <div class="filter-group">
         <label class="filter-label" for="dashboard-month-filter">Месяц</label>
-        <select class="filter-select" id="dashboard-month-filter" data-action="filterDashboard" data-filter="month">
+        <select class="filter-select" id="dashboard-month-filter" data-filter="month">
           <option value="">Все месяцы</option>
         </select>
       </div>
       
       <div class="filter-group">
         <label class="filter-label" for="dashboard-coin-filter">Актив</label>
-        <select class="filter-select" id="dashboard-coin-filter" data-action="filterDashboard" data-filter="coin">
+        <select class="filter-select" id="dashboard-coin-filter" data-filter="coin">
           <option value="">Все активы</option>
         </select>
       </div>
       
       <div class="filter-group">
         <label class="filter-label" for="dashboard-direction-filter">Направление</label>
-        <select class="filter-select" id="dashboard-direction-filter" data-action="filterDashboard" data-filter="direction">
+        <select class="filter-select" id="dashboard-direction-filter" data-filter="direction">
           <option value="">Все</option>
         </select>
       </div>
       
       <div class="filter-group">
         <label class="filter-label" for="dashboard-leverage-filter">Плечо</label>
-        <select class="filter-select" id="dashboard-leverage-filter" data-action="filterDashboard" data-filter="leverage">
+        <select class="filter-select" id="dashboard-leverage-filter" data-filter="leverage">
           <option value="">Все плечи</option>
         </select>
       </div>
