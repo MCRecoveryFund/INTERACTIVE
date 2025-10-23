@@ -66,7 +66,7 @@
   /* Gradient Colors - Reduced opacity for better readability */
   --bg-grad-1: hsl(200 100% 85% / 0.35);
   --bg-grad-2: hsl(330 100% 88% / 0.25);
-  --bg-grad-3: hsl(260 100% 90% / 0.20);
+  --bg-grad-3: hsl(260 100% 90% / 0.2);
 
   /* Background */
   --color-bg: var(--white);
@@ -108,7 +108,7 @@
 
   /* Gradient Colors - Reduced for better readability */
   --bg-grad-1: hsl(190 90% 45% / 0.12);
-  --bg-grad-2: hsl(345 90% 55% / 0.10);
+  --bg-grad-2: hsl(345 90% 55% / 0.1);
   --bg-grad-3: hsl(260 90% 60% / 0.08);
 
   /* Background - Darker for better contrast */
@@ -1013,6 +1013,67 @@ textarea:focus-visible {
   }
 }
 
+/* Vault Widget */
+.vault-widget {
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.vault-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.vault-metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.vault-positions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.vault-position {
+  padding: var(--space-md);
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  transition: all var(--transition-fast);
+}
+
+.vault-position:hover {
+  background: var(--surface-1);
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Loading Spinner */
+.spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Utility Classes */
 .hidden {
   display: none !important;
@@ -1068,6 +1129,10 @@ textarea:focus-visible {
   .card-grid {
     grid-template-columns: 1fr;
   }
+
+  .vault-metrics {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1086,17 +1151,17 @@ textarea:focus-visible {
   .nav-card {
     min-height: 140px;
   }
-  
+
   .btn {
     min-height: 48px;
     padding: var(--space-md) var(--space-lg);
   }
-  
+
   .btn-icon {
     min-width: 48px;
     min-height: 48px;
   }
-  
+
   .quiz-option {
     min-height: 60px;
   }
