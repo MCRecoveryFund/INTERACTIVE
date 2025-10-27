@@ -37,6 +37,95 @@ const PAGE_TO_TAB = {
   support: "more",
 };
 
+// ==========================================
+// Performance Optimization Utilities
+// ==========================================
+
+// Render cache for memoization
+const RenderCache = {
+  _cache: new Map(),
+  _maxSize: 50,
+  
+  get(key) {
+    return this._cache.get(key);
+  },
+  
+  set(key, value) {
+    if (this._cache.size >= this._maxSize) {
+      const firstKey = this._cache.keys().next().value;
+      this._cache.delete(firstKey);
+    }
+    this._cache.set(key, value);
+  },
+  
+  clear(pattern) {
+    if (pattern) {
+      for (const key of this._cache.keys()) {
+        if (key.includes(pattern)) {
+          this._cache.delete(key);
+        }
+      }
+    } else {
+      this._cache.clear();
+    }
+  }
+};
+
+// Ensure data module is loaded before rendering
+async function ensureDataLoaded(moduleName) {
+  if (!window.APP_DATA._loaded[moduleName]) {
+    try {
+      await window.loadDataModule(moduleName);
+    } catch (err) {
+      console.error(`Failed to load ${moduleName}:`, err);
+      return false;
+    }
+  }
+  return true;
+}
+
+// Batch DOM updates to minimize reflows
+const BatchDOMUpdater = {
+  _pending: [],
+  _rafId: null,
+  
+  schedule(fn) {
+    this._pending.push(fn);
+    if (!this._rafId) {
+      this._rafId = requestAnimationFrame(() => {
+        const updates = this._pending.splice(0);
+        this._rafId = null;
+        updates.forEach(fn => fn());
+      });
+    }
+  }
+};
+
+// Debounce function for performance
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Throttle function for scroll/resize events
+function throttle(func, limit) {
+  let inThrottle;
+  return function(...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}
+
 // Global State
 const AppState = {
   currentRoute: "home",
@@ -169,6 +258,9 @@ function switchTab(tabName) {
   if (tg) tg.HapticFeedback?.impactOccurred("light");
   else hapticFeedback("light");
 
+  // Мгновенно скроллим в начало ДО рендеринга
+  window.scrollTo({ top: 0, behavior: "auto" });
+
   // Обновить состояние
   AppState.activeTab = tabName;
   AppState.currentRoute = tabName;
@@ -186,9 +278,6 @@ function switchTab(tabName) {
 
   // Рендерить контент таба
   renderTabContent(tabName);
-
-  // Скроллить наверх
-  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function updateTabBar() {
@@ -302,6 +391,9 @@ function handleBackButton() {
 function navigate(route, params = {}) {
   hapticFeedback("light");
 
+  // Мгновенно скроллим в начало ДО рендеринга
+  window.scrollTo({ top: 0, behavior: "auto" });
+
   // Определяем является ли это основным табом
   const isTabRoute = ["home", "learn", "data", "progress", "more"].includes(
     route
@@ -396,7 +488,14 @@ function renderRoute(route, params) {
     default:
       // Если роут неизвестен - перенаправляем на главную
       switchTab("home");
+      return; // Важно: выходим, чтобы не скроллить после switchTab (там свой скролл)
   }
+  
+  // Дополнительный скролл после рендеринга (на случай динамического контента)
+  // Используем небольшую задержку, чтобы весь контент успел отрендериться
+  setTimeout(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, 50);
 }
 
 function getDaysWord(num) {
@@ -722,7 +821,7 @@ function renderHome(container) {
   container.innerHTML = `
     <div class="hero">
       <h1 class="hero-title">MC Recovery Fund</h1>
-      <p class="hero-subtitle">Ваш финансовый помощник</p>
+      <p class="hero-subtitle">Ваш проводник в мире инвестирования</p>
       ${
         streak > 0
           ? `<div style="display: flex; justify-content: center; margin-top: var(--space-md);">
@@ -1292,7 +1391,17 @@ function shareResult() {
   }
 }
 
-function renderEdu(container) {
+async function renderEdu(container) {
+  // Show loading state immediately
+  container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+  
+  // Ensure data is loaded
+  const loaded = await ensureDataLoaded('edu');
+  if (!loaded) {
+    container.innerHTML = `<div class="card"><p>❌ Ошибка загрузки данных</p></div>`;
+    return;
+  }
+  
   const topics = window.APP_DATA.edu;
   container.innerHTML = `<h1>Инфографика и видео</h1><p class="caption mb-lg">Интерактивные материалы о финансовых инструментах</p><div class="card-grid">${topics
     .map(
@@ -2046,7 +2155,17 @@ function getCategoryInfo(category) {
   return categories[category] || categories.general;
 }
 
-function renderGlossary(container) {
+async function renderGlossary(container) {
+  // Show loading state immediately
+  container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+  
+  // Ensure data is loaded
+  const loaded = await ensureDataLoaded('glossary');
+  if (!loaded) {
+    container.innerHTML = `<div class="card"><p>❌ Ошибка загрузки данных</p></div>`;
+    return;
+  }
+  
   const terms = window.APP_DATA.glossary || [];
   
   // Add categories to terms
@@ -2617,10 +2736,20 @@ function initThemeIcons() {
 // Part 2: New sections rendering
 // ==========================================
 
-function renderInstructions(container) {
+async function renderInstructions(container) {
+  // Show loading state immediately
+  container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+  
+  // Ensure data is loaded
+  const loaded = await ensureDataLoaded('instructions');
+  if (!loaded) {
+    container.innerHTML = `<div class="card"><p>❌ Ошибка загрузки данных</p></div>`;
+    return;
+  }
+  
   const data = window.APP_DATA.instructions;
   if (!data || !data.groups) {
-    container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+    container.innerHTML = `<div class="card"><p>❌ Данные недоступны</p></div>`;
     return;
   }
 
@@ -2698,7 +2827,17 @@ function renderInstructions(container) {
   `;
 }
 
-function renderAnnouncements(container) {
+async function renderAnnouncements(container) {
+  // Show loading state immediately
+  container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+  
+  // Ensure data is loaded
+  const loaded = await ensureDataLoaded('announcements');
+  if (!loaded) {
+    container.innerHTML = `<div class="card"><p>❌ Ошибка загрузки данных</p></div>`;
+    return;
+  }
+  
   const announcements = window.APP_DATA.announcements || [];
 
   if (announcements.length === 0) {
@@ -2769,10 +2908,20 @@ function renderAnnouncements(container) {
   `;
 }
 
-function renderBroadcasts(container) {
+async function renderBroadcasts(container) {
+  // Show loading state immediately
+  container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+  
+  // Ensure data is loaded
+  const loaded = await ensureDataLoaded('broadcasts');
+  if (!loaded) {
+    container.innerHTML = `<div class="card"><p>❌ Ошибка загрузки данных</p></div>`;
+    return;
+  }
+  
   const data = window.APP_DATA.broadcasts;
   if (!data || !data.schedule) {
-    container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+    container.innerHTML = `<div class="card"><p>❌ Данные недоступны</p></div>`;
     return;
   }
 
@@ -2915,10 +3064,20 @@ function renderDashboard(container) {
   `;
 }
 
-function renderSupport(container) {
+async function renderSupport(container) {
+  // Show loading state immediately
+  container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+  
+  // Ensure data is loaded
+  const loaded = await ensureDataLoaded('support');
+  if (!loaded) {
+    container.innerHTML = `<div class="card"><p>❌ Ошибка загрузки данных</p></div>`;
+    return;
+  }
+  
   const data = window.APP_DATA.support;
   if (!data || !data.channels) {
-    container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+    container.innerHTML = `<div class="card"><p>❌ Данные недоступны</p></div>`;
     return;
   }
 
@@ -2977,7 +3136,17 @@ function renderSupport(container) {
   `;
 }
 
-function renderDocuments(container) {
+async function renderDocuments(container) {
+  // Show loading state immediately
+  container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+  
+  // Ensure data is loaded
+  const loaded = await ensureDataLoaded('documents');
+  if (!loaded) {
+    container.innerHTML = `<div class="card"><p>❌ Ошибка загрузки данных</p></div>`;
+    return;
+  }
+  
   const documents = window.APP_DATA.documents || [];
 
   container.innerHTML = `
@@ -3022,10 +3191,20 @@ function renderDocuments(container) {
   `;
 }
 
-function renderFAQ(container) {
+async function renderFAQ(container) {
+  // Show loading state immediately
+  container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+  
+  // Ensure data is loaded
+  const loaded = await ensureDataLoaded('faq');
+  if (!loaded) {
+    container.innerHTML = `<div class="card"><p>❌ Ошибка загрузки данных</p></div>`;
+    return;
+  }
+  
   const data = window.APP_DATA.faq;
   if (!data || !data.categories) {
-    container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+    container.innerHTML = `<div class="card"><p>❌ Данные недоступны</p></div>`;
     return;
   }
 
@@ -3344,10 +3523,20 @@ function getDeclension(number, titles) {
   return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
 }
 
-function renderLiterature(container) {
+async function renderLiterature(container) {
+  // Show loading state immediately
+  container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+  
+  // Ensure data is loaded
+  const loaded = await ensureDataLoaded('literature');
+  if (!loaded) {
+    container.innerHTML = `<div class="card"><p>❌ Ошибка загрузки данных</p></div>`;
+    return;
+  }
+  
   const data = window.APP_DATA.literature;
   if (!data || !data.categories) {
-    container.innerHTML = `<div class="card"><p>Загрузка данных...</p></div>`;
+    container.innerHTML = `<div class="card"><p>❌ Данные недоступны</p></div>`;
     return;
   }
 
@@ -3580,20 +3769,20 @@ async function refreshVault() {
 }
 
 // Initialize app
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
+  // Synchronous initialization first
   loadUserData();
   initThemeIcons();
 
-  // Theme toggle
+  // Setup event handlers
   const themeToggle = document.getElementById("themeToggle");
   if (themeToggle) {
     themeToggle.onclick = toggleTheme;
   }
-
-  // Back button
+  
   document.getElementById("backBtn").onclick = handleBackButton;
 
-  // Initialize Tab Bar
+  // Initialize Tab Bar immediately
   renderTabBar();
 
   // Restore last active tab or use default
@@ -3603,29 +3792,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const initialTab = tabRoutes.includes(hash) ? hash : lastTab;
   AppState.activeTab = initialTab;
 
-  // Load Vault data on startup, then navigate
-  try {
-    await loadVaultData();
-  } catch (err) {
-    console.error("Failed to load initial vault data:", err);
+  // Event-driven approach: wait for critical data, then render
+  if (window.APP_DATA_READY) {
+    initializeApp(hash, initialTab, tabRoutes);
+  } else {
+    document.addEventListener('app-data-ready', () => {
+      initializeApp(hash, initialTab, tabRoutes);
+    }, { once: true });
   }
-
-  // Hide skeleton and navigate
-  setTimeout(() => {
-    const skeleton = document.getElementById("skeleton");
-    if (skeleton && window.APP_DATA.quizzes.length > 0) {
-      skeleton.style.display = "none";
-    }
-
-    // Navigate to initial tab or route
-    if (tabRoutes.includes(hash)) {
-      switchTab(hash);
-    } else if (hash && hash !== "home") {
-      navigate(hash);
-    } else {
-      switchTab(initialTab);
-    }
-  }, 300);
 
   // Initialize lazy loading for images
   initLazyLoading();
@@ -3656,6 +3830,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 });
+
+// App initialization function - called when critical data is ready
+async function initializeApp(hash, initialTab, tabRoutes) {
+  // Hide skeleton
+  const skeleton = document.getElementById("skeleton");
+  if (skeleton) {
+    skeleton.style.display = "none";
+  }
+
+  // Load Vault data asynchronously (don't block rendering)
+  loadVaultData().catch(err => {
+    console.error("Failed to load initial vault data:", err);
+  });
+
+  // Navigate to initial tab or route immediately
+  if (tabRoutes.includes(hash)) {
+    switchTab(hash);
+  } else if (hash && hash !== "home") {
+    navigate(hash);
+  } else {
+    switchTab(initialTab);
+  }
+}
 
 // ==========================================
 // DASHBOARD FUNCTIONALITY

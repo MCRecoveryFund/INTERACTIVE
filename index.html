@@ -16,11 +16,21 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="MC Recovery">
+    <!-- Resource Hints for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
+    <link rel="preconnect" href="https://api.hyperliquid.xyz">
+    <link rel="dns-prefetch" href="https://telegram.org">
+    
+    <!-- Critical CSS - загружается синхронно -->
     <link rel="stylesheet" href="styles.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Non-critical fonts - загружаются асинхронно -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap&subset=cyrillic" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet"></noscript>
+    
+    <!-- Telegram Web App SDK - defer для неблокирующей загрузки -->
+    <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
     <script>
       // Initialize theme before page load to prevent flash
       (function() {
@@ -85,9 +95,9 @@
         </div>
     </div>
 
-    <!-- Data Loading -->
+    <!-- Optimized Data Loading Strategy -->
     <script>
-        // Load JSON data
+        // Initialize APP_DATA with empty structures
         window.APP_DATA = {
             quizzes: [],
             glossary: [],
@@ -99,49 +109,95 @@
             support: {},
             dashboard: {},
             faq: {},
-            literature: {}
+            literature: {},
+            _loaded: {}, // Track loaded modules
+            _loading: {} // Track loading promises to avoid duplicate requests
         };
         
-        // Fetch data files (all from /data directory)
+        // Data loading status
+        window.APP_DATA_READY = false;
+        
+        // Lazy data loader function
+        window.loadDataModule = function(moduleName) {
+            // Return cached data if already loaded
+            if (window.APP_DATA._loaded[moduleName]) {
+                return Promise.resolve(window.APP_DATA[moduleName]);
+            }
+            
+            // Return existing loading promise if in progress
+            if (window.APP_DATA._loading[moduleName]) {
+                return window.APP_DATA._loading[moduleName];
+            }
+            
+            // Start loading
+            const loadingPromise = fetch(`data/${moduleName}.json`)
+                .then(r => {
+                    if (!r.ok) throw new Error(`Failed to load ${moduleName}`);
+                    return r.json();
+                })
+                .then(data => {
+                    window.APP_DATA[moduleName] = data;
+                    window.APP_DATA._loaded[moduleName] = true;
+                    delete window.APP_DATA._loading[moduleName];
+                    return data;
+                })
+                .catch(err => {
+                    console.error(`Failed to load ${moduleName}:`, err);
+                    delete window.APP_DATA._loading[moduleName];
+                    throw err;
+                });
+            
+            window.APP_DATA._loading[moduleName] = loadingPromise;
+            return loadingPromise;
+        };
+        
+        // Load CRITICAL data only for initial render (home page needs)
+        // Other data will be loaded on-demand when navigating to specific sections
         Promise.all([
-            fetch('data/quizzes.json').then(r => r.json()),
-            fetch('data/glossary.json').then(r => r.json()),
-            fetch('data/edu.json').then(r => r.json()),
-            fetch('data/instructions.json').then(r => r.json()),
-            fetch('data/announcements.json').then(r => r.json()),
-            fetch('data/broadcasts.json').then(r => r.json()),
-            fetch('data/documents.json').then(r => r.json()),
-            fetch('data/support.json').then(r => r.json()),
-            fetch('data/dashboard.json').then(r => r.json()),
-            fetch('data/faq.json').then(r => r.json()),
-            fetch('data/literature.json').then(r => r.json())
-        ]).then(([quizzes, glossary, edu, instructions, announcements, broadcasts, documents, support, dashboard, faq, literature]) => {
-            window.APP_DATA.quizzes = quizzes;
-            window.APP_DATA.glossary = glossary;
-            window.APP_DATA.edu = edu;
-            window.APP_DATA.instructions = instructions;
-            window.APP_DATA.announcements = announcements;
-            window.APP_DATA.broadcasts = broadcasts;
-            window.APP_DATA.documents = documents;
-            window.APP_DATA.support = support;
-            window.APP_DATA.dashboard = dashboard;
-            window.APP_DATA.faq = faq;
-            window.APP_DATA.literature = literature;
+            window.loadDataModule('quizzes'),
+            window.loadDataModule('dashboard')
+        ]).then(() => {
+            window.APP_DATA_READY = true;
+            document.dispatchEvent(new CustomEvent('app-data-ready'));
         }).catch(err => {
-            console.error('Failed to load data:', err);
+            console.error('Failed to load critical data:', err);
             document.getElementById('skeleton').style.display = 'none';
             document.getElementById('content').innerHTML = `
                 <div class="card" style="text-align: center; padding: var(--space-xl);">
                     <div style="font-size: 64px; margin-bottom: var(--space-lg);">⚠️</div>
                     <h2>Ошибка загрузки данных</h2>
-                    <p class="caption mb-lg">Не удалось загрузить данные приложения. Проверьте подключение к интернету и попробуйте снова.</p>
+                    <p class="caption mb-lg">Не удалось загрузить критичные данные приложения. Проверьте подключение к интернету и попробуйте снова.</p>
                     <button class="btn btn-primary" onclick="location.reload()" style="min-width: 200px;">
                         🔄 Обновить страницу
                     </button>
                 </div>
             `;
         });
+        
+        // Prefetch non-critical data in the background when browser is idle
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+                // Load frequently accessed data
+                ['instructions', 'faq', 'glossary'].forEach(module => {
+                    window.loadDataModule(module).catch(() => {});
+                });
+            }, { timeout: 2000 });
+            
+            // Load less critical data with lower priority
+            requestIdleCallback(() => {
+                ['edu', 'announcements', 'broadcasts', 'documents', 'support', 'literature'].forEach(module => {
+                    window.loadDataModule(module).catch(() => {});
+                });
+            }, { timeout: 5000 });
+        } else {
+            // Fallback for browsers without requestIdleCallback
+            setTimeout(() => {
+                ['instructions', 'faq', 'glossary', 'edu', 'announcements', 'broadcasts', 'documents', 'support', 'literature'].forEach(module => {
+                    window.loadDataModule(module).catch(() => {});
+                });
+            }, 1000);
+        }
     </script>
-    <script src="app.js"></script>
+    <script src="app.js" defer></script>
 </body>
 </html>

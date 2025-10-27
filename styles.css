@@ -1163,11 +1163,13 @@ textarea:focus-visible {
   position: relative;
   display: flex;
   align-items: center;
+  gap: var(--space-sm);
   background: var(--surface-1);
   border: 2px solid var(--border);
   border-radius: var(--radius-lg);
   transition: all var(--transition-fast);
   padding: var(--space-sm) var(--space-md);
+  min-height: 48px;
 }
 
 .search-input-wrapper:focus-within {
@@ -1177,19 +1179,24 @@ textarea:focus-visible {
 
 .search-icon {
   flex-shrink: 0;
+  width: 20px;
+  height: 20px;
   color: var(--text-secondary);
-  margin-right: var(--space-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .faq-search-input {
-  flex: 1;
+  flex: 1 1 auto;
   border: none;
   background: transparent;
   font-size: 16px;
   color: var(--color-text);
   outline: none;
-  padding: var(--space-xs) 0;
+  padding: 0;
   min-width: 0;
+  width: 100%;
 }
 
 .faq-search-input::placeholder {
@@ -1199,10 +1206,11 @@ textarea:focus-visible {
 
 .search-clear {
   flex-shrink: 0;
+  width: 32px;
+  height: 32px;
   background: none;
   border: none;
   padding: var(--space-xs);
-  margin-left: var(--space-xs);
   cursor: pointer;
   color: var(--text-secondary);
   border-radius: var(--radius-sm);
@@ -1584,6 +1592,7 @@ textarea:focus-visible {
 
   .search-input-wrapper {
     padding: var(--space-xs) var(--space-sm);
+    min-height: 44px;
   }
 }
 
