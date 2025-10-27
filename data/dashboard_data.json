@@ -188,6 +188,23 @@
       "pnl": 56006,
       "pnlPercent": 3.56,
       "duration": "192h 7m"
+    },
+    {
+      "id": "pos-012",
+      "dateRange": "07.10.2025 - 26.10.2025",
+      "startDate": "2025-10-07",
+      "endDate": "2025-10-26",
+      "coin": "HYPE",
+      "direction": "Long",
+      "leverage": "2x",
+      "volumeWithLeverage": 2661659,
+      "margin": 1330829,
+      "unrealizedPnl": 9792,
+      "fee": 950,
+      "funding": -3848,
+      "pnl": 152720,
+      "pnlPercent": 11.66,
+      "duration": "453h 14m"
     }
   ]
 }

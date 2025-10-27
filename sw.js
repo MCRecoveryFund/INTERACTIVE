@@ -27,7 +27,8 @@ const DATA_FILES = [
   '/data/documents.json',
   '/data/support.json',
   '/data/dashboard.json',
-  '/data/faq.json'
+  '/data/faq.json',
+  '/data/literature.json'
 ];
 
 // Install Event - Cache static assets
