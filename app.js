@@ -3839,11 +3839,6 @@ async function initializeApp(hash, initialTab, tabRoutes) {
     skeleton.style.display = "none";
   }
 
-  // Load Vault data asynchronously (don't block rendering)
-  loadVaultData().catch(err => {
-    console.error("Failed to load initial vault data:", err);
-  });
-
   // Navigate to initial tab or route immediately
   if (tabRoutes.includes(hash)) {
     switchTab(hash);
@@ -3852,6 +3847,28 @@ async function initializeApp(hash, initialTab, tabRoutes) {
   } else {
     switchTab(initialTab);
   }
+
+  // Load Vault data asynchronously and re-render home page after loading
+  loadVaultData()
+    .then(() => {
+      // Re-render home page if we're on it to show loaded vault data
+      if (AppState.currentRoute === "home") {
+        const container = document.getElementById("content");
+        if (container) {
+          renderHome(container);
+        }
+      }
+    })
+    .catch(err => {
+      console.error("Failed to load initial vault data:", err);
+      // Still re-render to show error state
+      if (AppState.currentRoute === "home") {
+        const container = document.getElementById("content");
+        if (container) {
+          renderHome(container);
+        }
+      }
+    });
 }
 
 // ==========================================
