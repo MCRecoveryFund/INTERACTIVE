@@ -1,0 +1,415 @@
+/* Overlay - базовый затемняющий слой без размытия */
+.onboarding-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Позволяем fixed элементам с высоким z-index быть поверх */
+}
+
+.onboarding-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Blur overlay - слой с размытием и вырезом для элемента */
+.onboarding-blur-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(8px) brightness(0.7);
+  -webkit-backdrop-filter: blur(8px) brightness(0.7);
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.onboarding-blur-overlay.active {
+  opacity: 1;
+}
+
+/* Подсветка элемента - spotlight эффект с подсветкой и вырезом */
+.onboarding-highlight {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 12px;
+  box-shadow: 0 0 0 4px rgba(92, 98, 236, 0.9), 0 0 0 8px rgba(92, 98, 236, 0.5),
+    0 0 30px 10px rgba(92, 98, 236, 0.6), 0 0 60px 20px rgba(92, 98, 236, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  animation: pulse-spotlight 1.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Вырез в overlay для чистой видимости элемента */
+.onboarding-highlight::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  border-radius: 12px;
+  background: transparent;
+  pointer-events: none;
+}
+
+@keyframes pulse-spotlight {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(92, 98, 236, 0.9),
+      0 0 0 8px rgba(92, 98, 236, 0.5), 0 0 30px 10px rgba(92, 98, 236, 0.6),
+      0 0 60px 20px rgba(92, 98, 236, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(92, 98, 236, 1),
+      0 0 0 12px rgba(92, 98, 236, 0.4), 0 0 40px 15px rgba(92, 98, 236, 0.8),
+      0 0 80px 30px rgba(92, 98, 236, 0.4);
+  }
+}
+
+/* Подсвеченный элемент получает повышенный z-index и яркость */
+.onboarding-target {
+  position: relative !important;
+  z-index: 10000 !important;
+  pointer-events: auto !important;
+  filter: brightness(1.15) contrast(1.05) !important;
+  transform: scale(1.01) !important;
+  transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Особые правила для fixed элементов (topbar, tab-bar) */
+/* Они должны сохранять position: fixed для корректной работы */
+.topbar.onboarding-target,
+.tab-bar.onboarding-target {
+  position: fixed !important;
+  z-index: 10000 !important;
+}
+
+/* Дочерние элементы topbar и tab-bar тоже должны быть видны */
+.topbar.onboarding-target *,
+.tab-bar.onboarding-target * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Отдельные элементы topbar (logo, theme toggle) при подсветке */
+.topbar-logo.onboarding-target,
+#themeToggle.onboarding-target {
+  position: relative !important;
+  z-index: 10000 !important;
+}
+
+/* Tooltip (Сноска) - минималистичный поповер */
+/* Оптимизирован для Telegram Mini App (мобильные устройства) */
+.onboarding-tooltip {
+  position: fixed;
+  z-index: 10001;
+  background: var(--bg-primary, #ffffff);
+  border-radius: 16px;
+  padding: 20px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 160px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI",
+    system-ui, sans-serif;
+  /* Позиционирование управляется через JavaScript */
+  width: auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Критическая оптимизация для LCP - исключаем из метрики */
+  content-visibility: auto;
+  contain: layout style paint;
+  contain-intrinsic-size: 0 300px; /* Помогает браузеру понять размер до рендера */
+}
+
+[data-theme="dark"] .onboarding-tooltip {
+  background: var(--bg-secondary, #1e1e1e);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+.onboarding-tooltip.active {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+/* Скроллбар для tooltip */
+.onboarding-tooltip::-webkit-scrollbar {
+  width: 4px;
+}
+
+.onboarding-tooltip::-webkit-scrollbar-thumb {
+  background: rgba(92, 98, 236, 0.5);
+  border-radius: 2px;
+}
+
+/* Стрелка-указатель отключена для мобильных */
+.onboarding-tooltip::before {
+  display: none;
+}
+
+/* Содержимое tooltip */
+.onboarding-tooltip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.onboarding-tooltip-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary, #000000);
+  margin: 0;
+  line-height: 1.4;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+[data-theme="dark"] .onboarding-tooltip-title {
+  color: var(--text-primary, #ffffff);
+}
+
+.onboarding-tooltip-step {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #333333);
+  background: rgba(92, 98, 236, 0.15);
+  border: 1px solid rgba(92, 98, 236, 0.3);
+  padding: 6px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .onboarding-tooltip-step {
+  color: var(--text-primary, #ffffff);
+  background: rgba(92, 98, 236, 0.25);
+  border: 1px solid rgba(92, 98, 236, 0.5);
+}
+
+.onboarding-tooltip-content {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary, #333333);
+  margin-bottom: 16px;
+}
+
+[data-theme="dark"] .onboarding-tooltip-content {
+  color: var(--text-primary, #cccccc);
+}
+
+.onboarding-tooltip-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.onboarding-btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  font-family: inherit;
+  outline: none;
+  min-height: 44px;
+}
+
+.onboarding-btn:focus-visible {
+  outline: 2px solid #5c62ec;
+  outline-offset: 2px;
+}
+
+.onboarding-btn-secondary {
+  background: transparent;
+  color: var(--text-secondary, #666666);
+}
+
+[data-theme="dark"] .onboarding-btn-secondary {
+  color: var(--text-secondary, #999999);
+}
+
+.onboarding-btn-secondary:hover {
+  background: var(--bg-tertiary, #f5f5f5);
+}
+
+[data-theme="dark"] .onboarding-btn-secondary:hover {
+  background: var(--bg-tertiary, #2a2a2a);
+}
+
+.onboarding-btn-primary {
+  background: #5c62ec;
+  color: #ffffff;
+}
+
+.onboarding-btn-primary:hover {
+  background: #4a50d9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(92, 98, 236, 0.3);
+}
+
+.onboarding-btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Иконка ручного запуска - в topbar рядом с темой */
+.onboarding-trigger {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-primary);
+  border: none;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+}
+
+.onboarding-trigger.visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.onboarding-trigger:hover {
+  background: var(--bg-secondary);
+  transform: scale(1.05);
+}
+
+.onboarding-trigger:active {
+  transform: scale(0.95);
+  background: var(--bg-tertiary);
+}
+
+.onboarding-trigger:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Индикатор прогресса */
+.onboarding-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(92, 98, 236, 0.2);
+  z-index: 10002;
+  overflow: hidden;
+  display: none;
+}
+
+.onboarding-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #5c62ec, #7b81ff);
+  transition: width 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(92, 98, 236, 0.5);
+}
+
+/* Accessibility - Скрытие от скринридеров при неактивном состоянии */
+.onboarding-overlay:not(.active),
+.onboarding-tooltip:not(.active) {
+  visibility: hidden;
+}
+
+.onboarding-overlay.active,
+.onboarding-tooltip.active {
+  visibility: visible;
+}
+
+/* Оптимизация производительности */
+.onboarding-overlay,
+.onboarding-highlight,
+.onboarding-tooltip {
+  will-change: opacity, transform;
+}
+
+/* Reduce motion для пользователей с prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-overlay,
+  .onboarding-highlight,
+  .onboarding-tooltip,
+  .onboarding-trigger,
+  .onboarding-btn {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+  .onboarding-highlight {
+    animation: none;
+  }
+}
+
+/* Высокий контраст для WCAG 2.1 */
+@media (prefers-contrast: high) {
+  .onboarding-overlay {
+    background-color: rgba(0, 0, 0, 0.85);
+  }
+
+  .onboarding-highlight {
+    box-shadow: 0 0 0 5px #5c62ec;
+  }
+
+  .onboarding-btn-primary {
+    background: #0000ff;
+  }
+}
+
+/* ==========================================
+   ДОПОЛНИТЕЛЬНЫЕ АДАПТАЦИИ
+   ========================================== */
+
+/* Landscape режим (горизонтальная ориентация) */
+@media (max-height: 500px) and (orientation: landscape) {
+  .onboarding-tooltip {
+    max-height: calc(100vh - 80px) !important;
+    padding: 12px !important;
+  }
+
+  .onboarding-tooltip-content {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .onboarding-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .onboarding-trigger {
+    bottom: 16px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+}

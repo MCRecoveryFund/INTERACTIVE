@@ -1,0 +1,224 @@
+{
+  "title": "📚 Рекомендованная литература",
+  "description": "Подборка книг для самостоятельного изучения инвестиций и трейдинга",
+  "categories": [
+    {
+      "id": "basics",
+      "name": "Основы инвестирования",
+      "icon": "📖",
+      "books": [
+        {
+          "id": "intelligent_investor",
+          "title": "Разумный инвестор. Полное руководство по стоимостному инвестированию",
+          "author": "Бенджамин Грэм",
+          "description": "Классика инвестиционной литературы. Фундаментальные принципы стоимостного инвестирования.",
+          "year": "1949",
+          "cover": "covers/intelligent_investor.webp"
+        },
+        {
+          "id": "richest_man",
+          "title": "Самый богатый человек в Вавилоне",
+          "author": "Джордж Сэмюэль Клейсон",
+          "description": "Вечные принципы богатства и финансовой мудрости в виде притч из древнего Вавилона.",
+          "year": "1926",
+          "cover": "covers/richest_man.webp"
+        },
+        {
+          "id": "rich_dad",
+          "title": "Богатый папа, бедный папа",
+          "author": "Роберт Кийосаки",
+          "description": "Основы финансовой грамотности и мышления богатых людей.",
+          "year": "1997",
+          "cover": "covers/rich_dad.webp"
+        }
+      ]
+    },
+    {
+      "id": "trading",
+      "name": "Трейдинг и технический анализ",
+      "icon": "📈",
+      "books": [
+        {
+          "id": "market_wizard",
+          "title": "Маги рынка",
+          "author": "Джек Швагер",
+          "description": "Интервью с лучшими трейдерами мира. Их стратегии, психология и подходы к рынку.",
+          "year": "1989",
+          "cover": "covers/market_wizard.webp"
+        },
+        {
+          "id": "technical_analysis",
+          "title": "Технический анализ фьючерсных рынков",
+          "author": "Джон Мэрфи",
+          "description": "Энциклопедия технического анализа. Все основные паттерны и индикаторы.",
+          "year": "1986",
+          "cover": "covers/technical_analysis.webp"
+        },
+        {
+          "id": "reminiscences",
+          "title": "Воспоминания биржевого спекулянта",
+          "author": "Эдвин Лефевр",
+          "description": "Биография легендарного трейдера Джесси Ливермора. Психология торговли и управление капиталом.",
+          "year": "1923",
+          "cover": "covers/reminiscences.webp"
+        },
+        {
+          "id": "japanese_candlestick",
+          "title": "Японские свечи: графический анализ",
+          "author": "Стив Нисон",
+          "description": "Подробное руководство по анализу японских свечей и паттернов.",
+          "year": "1991",
+          "cover": "covers/japanese_candlestick.webp"
+        }
+      ]
+    },
+    {
+      "id": "psychology",
+      "name": "Психология трейдинга",
+      "icon": "🧠",
+      "books": [
+        {
+          "id": "trading_psychology",
+          "title": "Психология трейдинга",
+          "author": "Бретт Стинбарджер",
+          "description": "Как психология влияет на результаты торговли и как развить правильное мышление трейдера.",
+          "year": "2003",
+          "cover": "covers/trading_psychology.webp"
+        },
+        {
+          "id": "disciplined_trader",
+          "title": "Дисциплинированный трейдер",
+          "author": "Марк Дуглас",
+          "description": "Развитие дисциплины и правильного отношения к рискам в трейдинге.",
+          "year": "1990",
+          "cover": "covers/disciplined_trader.webp"
+        },
+        {
+          "id": "trading_in_the_zone",
+          "title": "Зональный трейдинг",
+          "author": "Марк Дуглас",
+          "description": "Мастер-класс по психологии трейдинга. Как достичь состояния полной уверенности и управлять эмоциями на рынке.",
+          "year": "2000",
+          "cover": "covers/trading_in_the_zone.webp"
+        },
+        {
+          "id": "thinking_fast_slow",
+          "title": "Думай медленно... Решай быстро",
+          "author": "Даниэль Канеман",
+          "description": "Нобелевский лауреат о психологии принятия решений и когнитивных искажениях.",
+          "year": "2011",
+          "cover": "covers/thinking_fast_slow.webp"
+        }
+      ]
+    },
+    {
+      "id": "crypto",
+      "name": "Криптовалюты и DeFi",
+      "icon": "₿",
+      "books": [
+        {
+          "id": "mastering_bitcoin",
+          "title": "Осваиваем Bitcoin",
+          "author": "Андреас Антонопулос",
+          "description": "Техническое руководство по Bitcoin, блокчейну и криптовалютам.",
+          "year": "2014",
+          "cover": "covers/mastering_bitcoin.webp"
+        },
+        {
+          "id": "bitcoin_standard",
+          "title": "Bitcoin Standard",
+          "author": "Сайфедин Аммус",
+          "description": "Экономический анализ Bitcoin и его роль в современной финансовой системе.",
+          "year": "2018",
+          "cover": "covers/bitcoin_standard.webp"
+        },
+        {
+          "id": "cryptoassets",
+          "title": "Криптоактивы",
+          "author": "Крис Бернске, Джек Татар",
+          "description": "Инвестиционное руководство по криптовалютам и блокчейн-проектам.",
+          "year": "2017",
+          "cover": "covers/cryptoassets.webp"
+        },
+        {
+          "id": "defi_book",
+          "title": "Как DeFi меняет финансы",
+          "author": "Кэмпбелл Харви, Ашвин Рамачандран",
+          "description": "Подробный обзор децентрализованных финансов и их влияния на традиционную систему.",
+          "year": "2021",
+          "cover": "covers/defi_book.webp"
+        }
+      ]
+    },
+    {
+      "id": "risk_management",
+      "name": "Риск-менеджмент",
+      "icon": "⚖️",
+      "books": [
+        {
+          "id": "fooled_randomness",
+          "title": "Одураченные случайностью",
+          "author": "Нассим Талеб",
+          "description": "Роль случайности в трейдинге и жизни. Как не стать жертвой когнитивных искажений.",
+          "year": "2001",
+          "cover": "covers/fooled_randomness.webp"
+        },
+        {
+          "id": "black_swan",
+          "title": "Чёрный лебедь",
+          "author": "Нассим Талеб",
+          "description": "Как редкие непредсказуемые события влияют на рынки и нашу жизнь.",
+          "year": "2007",
+          "cover": "covers/black_swan.webp"
+        },
+        {
+          "id": "risk_savvy",
+          "title": "Понимать риски. Как выбирать правильный курс",
+          "author": "Герд Гигеренцер",
+          "description": "Как принимать правильные решения в условиях неопределённости.",
+          "year": "2013",
+          "cover": "covers/risk_savvy.webp"
+        },
+        {
+          "id": "antifragile",
+          "title": "Антихрупкость. Как извлечь выгоду из хаоса",
+          "author": "Нассим Николас Талеб",
+          "description": "Как системы выигрывают от стресса и хаоса. Концепция антихрупкости в трейдинге и жизни.",
+          "year": "2012",
+          "cover": "covers/antifragile.webp"
+        }
+      ]
+    },
+    {
+      "id": "advanced",
+      "name": "Продвинутый уровень",
+      "icon": "🎓",
+      "books": [
+        {
+          "id": "quantitative_trading",
+          "title": "Количественный трейдинг",
+          "author": "Эрни Чан",
+          "description": "Алгоритмическая торговля и разработка торговых систем.",
+          "year": "2008",
+          "cover": "covers/quantitative_trading.webp"
+        },
+        {
+          "id": "option_volatility",
+          "title": "Опционы, волатильность и ценообразование",
+          "author": "Шелдон Натенберг",
+          "description": "Продвинутое руководство по торговле опционами и управлению рисками.",
+          "year": "1994",
+          "cover": "covers/option_volatility.webp"
+        },
+        {
+          "id": "algorithmic_trading",
+          "title": "Алгоритмическая торговля",
+          "author": "Эрнест Чан",
+          "description": "Стратегии победы и их обоснование для институциональных инвесторов и хедж-фондов.",
+          "year": "2013",
+          "cover": "covers/algorithmic_trading.webp"
+        }
+      ]
+    }
+  ]
+}

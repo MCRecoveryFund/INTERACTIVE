@@ -1,0 +1,186 @@
+{
+  "title": "Инструкции",
+  "description": "Пошаговые руководства для работы с платформой",
+  "groups": [
+    {
+      "id": "vaults",
+      "title": "Vaultы",
+      "icon": "🏦",
+      "description": "Управление инвестиционными фондами",
+      "items": [
+        {
+          "id": "vault-mc-recovery",
+          "title": "Vault MC Recovery Fund",
+          "description": "Основной инвестиционный фонд",
+          "url": "https://app.hyperliquid.xyz/vaults/0x914434e8a235cb608a94a5f70ab8c40927152a24",
+          "type": "external"
+        },
+        {
+          "id": "vault-xgo",
+          "title": "Vault XGO Fund",
+          "description": "Альтернативный инвестиционный фонд",
+          "url": "https://app.hyperliquid.xyz/vaults/0x0e5f726fcc5b581efdc30efbad46836717e8e01e",
+          "type": "external"
+        }
+      ]
+    },
+    {
+      "id": "safepal",
+      "title": "Кошелёк SafePal",
+      "icon": "💳",
+      "description": "Настройка и использование кошелька",
+      "items": [
+        {
+          "id": "safepal-install",
+          "title": "Установка и настройка",
+          "description": "Как установить и создать кошелёк SafePal на телефоне",
+          "url": "https://telegra.ph/Kak-ustanovit-i-sozdat-koshelyok-SafePal-na-telefone-07-22",
+          "type": "guide"
+        },
+        {
+          "id": "safepal-buy",
+          "title": "Покупка ETH и USDC",
+          "description": "Руководство по покупке криптовалюты",
+          "url": "https://telegra.ph/Pokupka-ETH-i-USDC-07-22",
+          "type": "guide"
+        }
+      ]
+    },
+    {
+      "id": "exchange",
+      "title": "Обмен",
+      "icon": "🔄",
+      "description": "Обмен криптовалют",
+      "items": [
+        {
+          "id": "usdt-usdc",
+          "title": "Обмен USDT на USDC",
+          "description": "Конвертация между стейблкоинами",
+          "url": "https://telegra.ph/Obmen-USDT-na-USDC-07-22",
+          "type": "guide"
+        },
+        {
+          "id": "usdt-usdc-wallet",
+          "title": "Обмен внутри кошелька USDT→USDC",
+          "description": "Быстрый обмен в приложении",
+          "url": "https://telegra.ph/Obmen-USDT-na-USDC-v-koshelke-08-06",
+          "type": "guide",
+          "videos": [
+            {
+              "title": "Видео инструкция 1",
+              "url": "https://t.me/c/2781535465/10/1226"
+            },
+            {
+              "title": "Видео инструкция 2",
+              "url": "https://t.me/c/2781535465/10/1227"
+            }
+          ]
+        },
+        {
+          "id": "usdt-eth",
+          "title": "Обмен USDT на ETH",
+          "description": "Конвертация стейблкоина в Ethereum",
+          "url": "https://t.me/c/2781535465/10/1226",
+          "type": "guide"
+        }
+      ]
+    },
+    {
+      "id": "deposit",
+      "title": "Пополнение",
+      "icon": "📥",
+      "description": "Пополнение кошельков и счетов",
+      "items": [
+        {
+          "id": "deposit-wallet",
+          "title": "Пополнение кошелька",
+          "description": "Как пополнить SafePal кошелёк",
+          "url": "https://telegra.ph/Popolnenie-koshelka-07-22",
+          "type": "guide"
+        },
+        {
+          "id": "deposit-hyperliquid",
+          "title": "Пополнение Hyperliquid",
+          "description": "Ввод средств на платформу Hyperliquid",
+          "url": "https://telegra.ph/Popolnenie-Hyperliquid-07-22",
+          "type": "guide"
+        },
+        {
+          "id": "deposit-hyperliquid-chrome",
+          "title": "Через Chrome (аккаунт Hyperliquid)",
+          "description": "Пополнение через браузер",
+          "url": "https://t.me/c/2781535465/10/1228",
+          "type": "guide"
+        },
+        {
+          "id": "deposit-hyperliquid-safepal",
+          "title": "Через SafePal (аккаунт Hyperliquid)",
+          "description": "Пополнение через мобильный кошелёк",
+          "url": "https://t.me/c/2781535465/10/1229",
+          "type": "guide"
+        },
+        {
+          "id": "deposit-vault-safepal",
+          "title": "Пополнение Vault через SafePal",
+          "description": "Ввод средств в инвестиционный фонд",
+          "url": "https://t.me/c/2781535465/10/1996",
+          "type": "guide",
+          "videos": [
+            {
+              "title": "Видео инструкция 1",
+              "url": "https://t.me/c/2781535465/10/1228"
+            },
+            {
+              "title": "Видео инструкция 2",
+              "url": "https://t.me/c/2781535465/10/1229"
+            }
+          ]
+        },
+        {
+          "id": "deposit-vault-pool",
+          "title": "Пополнение Vault (пул)",
+          "description": "Коллективный ввод средств",
+          "url": "https://t.me/c/2781535465/10/1996",
+          "type": "guide"
+        }
+      ]
+    },
+    {
+      "id": "withdrawal",
+      "title": "Вывод",
+      "icon": "📤",
+      "description": "Вывод средств",
+      "items": [
+        {
+          "id": "withdrawal-vault",
+          "title": "Вывод из Vault",
+          "description": "Как вывести средства из инвестиционного фонда",
+          "url": "https://telegra.ph/Vyvod-iz-Vault-10-04",
+          "type": "guide"
+        },
+        {
+          "id": "withdrawal-hyperliquid",
+          "title": "Вывод с HyperLiquid",
+          "description": "Вывод средств с торговой платформы",
+          "url": "https://telegra.ph/Vyvod-sredstv-s-HyperLiquid-08-02",
+          "type": "guide"
+        }
+      ]
+    },
+    {
+      "id": "vpn",
+      "title": "VPN",
+      "icon": "🔐",
+      "description": "Настройка безопасного подключения",
+      "items": [
+        {
+          "id": "vpn-setup",
+          "title": "Настройка VPN",
+          "description": "Инструкция по настройке VPN для доступа",
+          "url": "https://t.me/c/2781535465/10/4696",
+          "type": "guide"
+        }
+      ]
+    }
+  ]
+}

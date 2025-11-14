@@ -1,0 +1,51 @@
+{
+  "title": "График эфиров и записи",
+  "description": "Еженедельные прямые включения с Александром",
+  "intro": "Мы в эфире! Уже в октябре стартуем еженедельные прямые включения с Александром — чтобы быть ближе, чаще и ещё полезнее для вас. Это живой формат, где можно получить знания из первых рук, задать вопросы и прокачать навыки в инвестициях и проп-трейдинге.",
+  "schedule": [
+    {
+      "id": "broadcast-1",
+      "date": "2025-10-07",
+      "time": "12:00",
+      "timezone": "МСК",
+      "day": "Вт",
+      "title": "MC Recovery Fund + Prop Trading Hub: два инструмента одной стратегии",
+      "description": "Как совместить инвестиции и проп-трейдинг",
+      "status": "completed",
+      "recordUrl": "https://kinescope.io/0csSpxw8cNKx3NPooqxUZj"
+    },
+    {
+      "id": "broadcast-2",
+      "date": "2025-10-10",
+      "time": "12:00",
+      "timezone": "МСК",
+      "day": "Пт",
+      "title": "Зачем инвестору проп-трейдинг?",
+      "description": "Как зарабатывать в фонде и параллельно ускорять рост через проп-трейдинг. Мягкий вход в активную торговлю.",
+      "status": "completed",
+      "recordUrl": "https://kinescope.io/0csY739HjSxHu2iaVZ8w8f"
+    },
+    {
+      "id": "broadcast-3",
+      "date": "2025-10-14",
+      "time": "12:00",
+      "timezone": "МСК",
+      "day": "Вт",
+      "title": "Психология инвестора и трейдера: как выдерживать ожидание и не мешать прибыли расти",
+      "description": "Дисциплина, паузы рынка и как не срезать собственную доходность",
+      "status": "completed",
+      "recordUrl": "https://kinescope.io/0ct6K879w5akKntp56NbmU"
+    },
+    {
+      "id": "broadcast-5",
+      "date": "2025-10-21",
+      "time": "12:00",
+      "timezone": "МСК",
+      "day": "Вт",
+      "title": "АМА-сессия: MC Recovery Fund + Prop Trading Hub",
+      "description": "Ответы на ваши вопросы — без воды, по делу",
+      "status": "completed",
+      "recordUrl": "https://telegra.ph/Klyuchevye-voprosy-i-otvety-po-tekushchej-situacii-i-planam-AMA-sessiya-ot-211025-10-21"
+    }
+  ]
+}
